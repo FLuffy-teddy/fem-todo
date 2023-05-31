@@ -10,8 +10,8 @@ export default function Header({Background}:AcceptedProps) {
     <>
       <Image
         src={Background}
-        height={500}
-        width={1000}
+        height={1000}
+        width={2000}
         alt={"Background"}
       />
     </>
