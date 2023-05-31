@@ -19,7 +19,7 @@ export default function Home() {
     "background": "/bg-desktop-light.jpg",
     "icon": "/icon-moon.svg",
     "heading": "light-gray-blue",
-    "body": "light-grayish-blue",
+    "body": "custom-blue",
     "check": "icon-cross.svg"
   }
 
@@ -27,7 +27,7 @@ export default function Home() {
     ? lightTheme.background
     : darkTheme.background;
   const buttonImage = toggle ? lightTheme.icon : darkTheme.icon;
-
+  const Theme = toggle ? lightTheme : darkTheme;
 
 
   return (
@@ -44,7 +44,7 @@ export default function Home() {
             alt={"Button Toggle"}
           />
         </button>
-        <Notes/>
+        <Notes Theme={Theme}/>
       </div>
     </main>
   );
