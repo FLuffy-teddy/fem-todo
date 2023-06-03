@@ -25,3 +25,13 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+img.false {
+  visibility: hidden;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+img.true {
+  visibility: visible;
+}
+button.active {
+  color: blue;
+}

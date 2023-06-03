@@ -29,17 +29,16 @@ export default function Notes({ toggle, transition }: AcceptedProps) {
   };
   const Theme = toggle ? lightTheme : darkTheme;
 
-  const [click, setClick] = useState();
-
   interface ChecklistInterface {
     checklistId: number;
     message: string;
-    checked: false;
+    checked: boolean;
   }
   interface ChecklistInterfaces extends Array<ChecklistInterface> {}
 
   const [todo, setTodo] = useState<string>("");
   const [checklist, setChecklist] = useState<ChecklistInterfaces>([]);
+  const [active, setActive] = useState<string>('');
 
   function addCheckList() {
     if (!todo) {
@@ -62,19 +61,35 @@ export default function Notes({ toggle, transition }: AcceptedProps) {
   }
   function drop(listItem: any) {
     listItem.preventDefault();
-    var data = listItem.dataTransfer.getData("text");
+    let data = listItem.dataTransfer.getData("text");
     listItem.target.appendChild(document.getElementById(data));
   }
   function checkMessage(listID: number, checkMark: boolean) {
     const updateCheck = checklist.map((list) => {
       if (list.checklistId === listID) {
-        return !list.checked;
+        return { ...list, checked: !checkMark };
       } else {
-        return list.checked;
+        return list;
       }
     });
-    // setChecklist(updateCheck);
+    setChecklist(updateCheck);
   }
+  function todoFilter() {
+    const filterMap = checklist.map((list) => {
+
+    })
+  }
+  function setActiveButton(event:any) {
+    setActive(event.target.id);
+  }
+  function buttonClicks() {
+    setActiveButton(event);
+    todoFilter();
+  }
+
+
+
+
   return (
     <div className="w-full flex flex-col">
       <input
@@ -102,7 +117,7 @@ export default function Notes({ toggle, transition }: AcceptedProps) {
                 width={22}
                 alt={"Checklist"}
                 className={`${Theme.gradient} ${transition}
-                object-fit hidden`}
+                object-fit ${list.checked}`}
               />
             </button>
             {list.message}
@@ -110,6 +125,17 @@ export default function Notes({ toggle, transition }: AcceptedProps) {
           </li>
         ))}
       </ul>
+      <div className={`w-full flex justify-between p-4 ${Theme.background} ${Theme.body} ${Theme.border} rounded-md`}>
+        <p>{checklist.length} items left </p>
+        <p>
+          <button onClick={setActiveButton} id="1" className={active === "1" ? "active p-2" : "px-2"}>All</button>
+          <button onClick={setActiveButton} id="2" className={active === "2" ? "active p-2" : "px-2"}>Active</button>
+          <button onClick={setActiveButton} id="3" className= {active === "3" ? "active p-2" : "px-2"}>Completed</button>
+        </p>
+        <p>
+          <button>Clear Completed</button>
+        </p>
+      </div>
     </div>
   );
 }
