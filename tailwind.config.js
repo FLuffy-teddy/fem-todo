@@ -30,4 +30,10 @@ module.exports = {
     },
   },
   plugins: [],
+  safelist: [
+    "bg-indigo-950",
+    {
+      pattern: /bg-\w+-[1-9]00/,
+    },
+  ],
 };

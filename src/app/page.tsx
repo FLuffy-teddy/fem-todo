@@ -11,29 +11,19 @@ export default function Home() {
   const darkTheme = {
     background: "/bg-desktop-dark.jpg",
     icon: "/icon-sun.svg",
-    heading: "stone-600",
-    body: "indigo-950",
-    check: "icon-check.svg",
-    g1: "bg-check-1",
-    g2: "bg-check-2",
   };
   const lightTheme = {
     background: "/bg-desktop-light.jpg",
     icon: "/icon-moon.svg",
-    heading: "neutral-400",
-    body: "indigo-100",
-    check: "icon-cross.svg",
-    g1: "bg-check-1",
-    g2: "bg-check-2",
   };
 
   const backgroundImage = toggle ? lightTheme.background : darkTheme.background;
   const buttonImage = toggle ? lightTheme.icon : darkTheme.icon;
-  const Theme = toggle ? lightTheme : darkTheme;
   const backgroundColor = toggle ? "bg-white" : "bg-black";
+  const transition = 'transition-all duration-1000 ease-in delay-75';
 
   return (
-    <main className={`flex justify-center min-h-screen ${backgroundColor} transition-all duration-1000 ease-in delay-75`}>
+    <main className={`flex justify-center min-h-screen ${backgroundColor} ${transition}`}>
       <Header Background={backgroundImage} />
 
       <div className="w-1/2 flex flex-col items-center p-4 relative z-1 w-1/2">
@@ -49,7 +39,7 @@ export default function Home() {
           </button>
         </div>
 
-        <Notes Theme={Theme} />
+        <Notes toggle={toggle} transition={transition} />
       </div>
     </main>
   );

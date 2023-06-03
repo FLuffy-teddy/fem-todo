@@ -4,18 +4,34 @@ import Image from "next/image";
 let id = 0;
 
 interface AcceptedProps {
-  Theme: {
-    background: string;
-    icon: string;
-    heading: string;
-    body: string;
-    check: string;
-    g1: string;
-    g2: string;
-  };
+  toggle : boolean;
+  transition: string;
 }
 
-export default function Notes({ Theme }: AcceptedProps) {
+export default function Notes({ toggle, transition }: AcceptedProps) {
+
+  const darkTheme = {
+    background: 'bg-v-dark-blue',
+    icon: "/icon-sun.svg",
+    heading: "text-v-light-gray-blue",
+    body: "text-dark-gray-blue",
+    border: 'border-v-dark-gray-blue',
+    check: "icon-check.svg",
+    gradient: "from-bg-check-1 to-bg-check-2",
+  };
+  const lightTheme = {
+    background: "bg-v-light-gray",
+    icon: "/icon-moon.svg",
+    heading: "text-v-light-gray-blue",
+    body: "text-light-gray-blue",
+    border: 'border-light-gray-blue',
+    check: "icon-cross.svg",
+    gradient: "from-bg-check-1 to-bg-check-2",
+  };
+  const Theme = toggle ? lightTheme : darkTheme;
+
+  const [click, setClick] = useState();
+  
   interface ChecklistInterface {
     checklistId: number;
     message: string;
@@ -42,10 +58,10 @@ export default function Notes({ Theme }: AcceptedProps) {
     });
     id--;
   }
-  function drag(ev:any) {
+  function drag(ev: any) {
     ev.dataTransfer.setData("text", ev.target.id);
-  } 
-  function drop(listItem:any) {
+  }
+  function drop(listItem: any) {
     listItem.preventDefault();
     var data = listItem.dataTransfer.getData("text");
     listItem.target.appendChild(document.getElementById(data));
@@ -53,21 +69,16 @@ export default function Notes({ Theme }: AcceptedProps) {
   function checkMessage(listID: number, checkMark: boolean) {
     checklist.map((list) => {
       if (list.checklistId === listID) {
-        return { ...checklist, checked: !checkMark };
+        return [...checklist, {checked: !checkMark} ];
       } else {
         return checklist;
       }
     });
   }
-  function moveMessage(listID: number) {
-    checklist.map((list) => {
-      setChecklist(checklist.filter((a) => a.checklistId !== list.checklistId));
-    });
-  }
   return (
-    <div className={`w-full flex flex-col bg-${Theme.body}`}>
+    <div className="w-full flex flex-col">
       <input
-        className="text-black p-2 rounded-md mb-2"
+        className={`text-lg p-4 rounded-md mb-2 ${Theme.background} ${Theme.body} ${Theme.border} ${transition}`}
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
         placeholder="Create a new todo..."
@@ -76,15 +87,23 @@ export default function Notes({ Theme }: AcceptedProps) {
 
       <ul onDrop={drop}>
         {checklist.map((list) => (
-          <li draggable="true"
-            className={`p-2 border-b-2 border-${Theme.body} rounded-md text-${Theme.body} flex justify-between items-center`}
+          <li
+            draggable="true"
+            className={`text-lg p-4 border-b-2 rounded-md ${Theme.background} ${Theme.body} ${Theme.border} flex justify-start items-center ${transition}`}
             key={list.checklistId}
           >
             <button
-              className={`rounded-full border-2 border-${Theme.body}`}
+              className={`mr-6 rounded-full border-2 ${Theme.border} ${transition} w-[22px] h-[22px]`}
               onClick={() => checkMessage(list.checklistId, list.checked)}
             >
-              <Image src={Theme.check} height={18} width={22} alt={"Checklist"} className={`from-${Theme.g1} to-${Theme.g2}`} />
+              <Image
+                src={Theme.check}
+                height={22}
+                width={22}
+                alt={"Checklist"}
+                className={`${Theme.gradient} ${transition}
+                object-fit hidden`}
+              />
             </button>
             {list.message}
             <button onClick={removeCheckList}>X</button>
