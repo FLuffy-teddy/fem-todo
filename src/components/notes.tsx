@@ -4,18 +4,17 @@ import Image from "next/image";
 let id = 0;
 
 interface AcceptedProps {
-  toggle : boolean;
+  toggle: boolean;
   transition: string;
 }
 
 export default function Notes({ toggle, transition }: AcceptedProps) {
-
   const darkTheme = {
-    background: 'bg-v-dark-blue',
+    background: "bg-v-dark-blue",
     icon: "/icon-sun.svg",
     heading: "text-v-light-gray-blue",
     body: "text-dark-gray-blue",
-    border: 'border-v-dark-gray-blue',
+    border: "border-v-dark-gray-blue",
     check: "icon-check.svg",
     gradient: "from-bg-check-1 to-bg-check-2",
   };
@@ -24,14 +23,14 @@ export default function Notes({ toggle, transition }: AcceptedProps) {
     icon: "/icon-moon.svg",
     heading: "text-v-light-gray-blue",
     body: "text-light-gray-blue",
-    border: 'border-light-gray-blue',
+    border: "border-light-gray-blue",
     check: "icon-cross.svg",
     gradient: "from-bg-check-1 to-bg-check-2",
   };
   const Theme = toggle ? lightTheme : darkTheme;
 
   const [click, setClick] = useState();
-  
+
   interface ChecklistInterface {
     checklistId: number;
     message: string;
@@ -67,13 +66,14 @@ export default function Notes({ toggle, transition }: AcceptedProps) {
     listItem.target.appendChild(document.getElementById(data));
   }
   function checkMessage(listID: number, checkMark: boolean) {
-    checklist.map((list) => {
+    const updateCheck = checklist.map((list) => {
       if (list.checklistId === listID) {
-        return [...checklist, {checked: !checkMark} ];
+        return !list.checked;
       } else {
-        return checklist;
+        return list.checked;
       }
     });
+    // setChecklist(updateCheck);
   }
   return (
     <div className="w-full flex flex-col">
